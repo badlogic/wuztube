@@ -1,11 +1,11 @@
 {
   "app": {
-    "description": "A super duper app",
-    "domain": "app.io",
+    "description": "A YouTube app for kids that's not terrible",
+    "domain": "wuztube.marioslab.io",
     "email": "badlogicgames@gmail.com",
-    "host": "marioslab.io",
+    "host": "slayer.marioslab.io",
     "hostDir": "/home/badlogic",
-    "name": "app",
+    "name": "wuztube",
     "serverPort": 3333
   },
   "dependencies": {
@@ -43,7 +43,7 @@
     "tailwindcss": "3.4.0"
   },
   "license": "MIT",
-  "name": "__app_name__",
+  "name": "wuztube",
   "scripts": {
     "build": "npm run build:css && npm run build:site && npm run build:server",
     "build:css": "npx tailwindcss -i html/styles.css -o html/build/styles-bundle.css",

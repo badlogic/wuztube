@@ -1,6 +1,6 @@
-# app-template
+# wuztube
 
-Used to create new (progressive) web apps and deploy them to a server running Docker and nginx-proxy for SSL cert generation.
+A YouTube for Kids app that doesn't suck completely.
 
 ### Development
 
