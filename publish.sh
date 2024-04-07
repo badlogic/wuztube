@@ -12,7 +12,7 @@ rsync -avz --exclude node_modules --exclude .git --exclude data --exclude docker
 
 if [ "$1" == "server" ]; then
     echo "Publishing client & server"
-    ssh -t $host "export WUZTUBE_DB=$WUZTUBE_DB && export WUZTUBE_DB_USER=$WUZTUBE_DB_USER && export WUZTUBE_DB_PASSWORD=$WUZTUBE_DB_PASSWORD && cd $host_dir && ./docker/control.sh stop && ./docker/control.sh start && ./docker/control.sh logs"
+    ssh -t $host "export WUZTUBE_YOUTUBE_KEY=$WUZTUBE_YOUTUBE_KEY && cd $host_dir && ./docker/control.sh stop && ./docker/control.sh start && ./docker/control.sh logs"
 else
     echo "Publishing client only"
 fi

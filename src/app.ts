@@ -4,6 +4,7 @@ import { i18n } from "./utils/i18n.js";
 import { setupLiveReload } from "./utils/live-reload.js";
 import { renderError } from "./utils/ui-components.js";
 import { router } from "./utils/routing.js";
+import { Store } from "./utils/store.js";
 export * from "./pages/index.js";
 export * from "./utils/ui-components.js";
 
@@ -32,13 +33,34 @@ export class App extends LitElement {
             () => "404"
         );
         router.addRoute(
-            "/settings",
-            () => html`<settings-page></settings-page>`,
-            () => "Settings"
+            "/setup",
+            () => html`<setup-page></setup-page>`,
+            () => "Setup"
+        );
+        router.addRoute(
+            "/search",
+            () => html`<search-page></search-page>`,
+            () => "Search"
+        );
+        router.addRoute(
+            "/video/:id",
+            () => html`<video-page></video-page>`,
+            () => "Search"
+        );
+        router.addRoute(
+            "/playlist/:id",
+            () => html`<playlist-page></playlist-page>`,
+            () => "Search"
         );
 
         router.setRootRoute("/");
         router.setNotFoundRoot("/404");
+
+        /*if (Store.getIsFirstTime()) {
+            router.replace("/setup");
+        } else {
+            router.replace(location.pathname);
+        }*/
         router.replace(location.pathname);
     }
 }

@@ -1,19 +1,14 @@
-export type DevPreferences = {
-    enabled: boolean;
-};
-
-export type SynologyPreferences = {
-    downloadsFolder: string;
-};
+import { Channel, Playlist, Video } from "../common/data";
 
 export type Theme = "dark" | "light";
 
 export type Settings = {
     theme: Theme;
-    devPrefs: DevPreferences;
+    saved: (Video | Channel | Playlist)[];
+    isFirstTime: boolean;
 };
 
-export type StoreKey = "user" | "settings";
+export type StoreKey = "settings";
 
 export class Store {
     static memory = new Map<string, any>();
@@ -23,9 +18,8 @@ export class Store {
         settings = settings ?? ({} as Settings);
 
         settings.theme = settings.theme ?? "dark";
-
-        settings.devPrefs = settings.devPrefs ?? ({} as DevPreferences);
-        settings.devPrefs.enabled = settings.devPrefs.enabled ?? false;
+        settings.saved = settings.saved ?? [];
+        settings.isFirstTime = settings.isFirstTime ?? true;
 
         Store.set<Settings>("settings", settings);
     }
@@ -64,12 +58,20 @@ export class Store {
         return theme;
     }
 
-    static getDevPrefs() {
-        return Store.get<Settings>("settings")?.devPrefs;
+    static getIsFirstTime() {
+        return Store.get<Settings>("settings")?.isFirstTime;
     }
 
-    static setDevPrefs(devPrefs: DevPreferences) {
-        Store.set("settings", { ...Store.get<Settings>("settings"), devPrefs });
+    static setIsFirstTime(isFirstTime: boolean) {
+        Store.set("settings", { ...Store.get<Settings>("settings"), isFirstTime });
+    }
+
+    static getSaved() {
+        return Store.get<Settings>("settings")?.saved ?? [];
+    }
+
+    static setSaved(saved: (Video | Channel | Playlist)[]) {
+        Store.set("settings", { ...Store.get<Settings>("settings"), saved });
     }
 }
 

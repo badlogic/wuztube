@@ -1,4 +1,5 @@
-import { error } from "./utils/utils.js";
+import { error } from "../utils/utils.js";
+import { Video, Channel, Playlist } from "./data.js";
 
 export interface JsonValue {
     [key: string]: any;
@@ -14,26 +15,6 @@ export async function apiGet<T>(endpoint: string) {
         const result = await fetch(apiBaseUrl() + endpoint);
         if (!result.ok) throw new Error();
         return (await result.json()) as T;
-    } catch (e) {
-        return error(`Request /api/${endpoint} failed`, e);
-    }
-}
-
-export async function apiGetBlob(endpoint: string): Promise<Blob | Error> {
-    try {
-        const result = await fetch(apiBaseUrl() + endpoint);
-        if (!result.ok) throw new Error();
-        return await result.blob();
-    } catch (e) {
-        return error(`Request /api/${endpoint} failed`, e);
-    }
-}
-
-export async function apiGetText(endpoint: string): Promise<string | Error> {
-    try {
-        const result = await fetch(apiBaseUrl() + endpoint);
-        if (!result.ok) throw new Error();
-        return await result.text();
     } catch (e) {
         return error(`Request /api/${endpoint} failed`, e);
     }
@@ -62,24 +43,10 @@ export async function apiPost<T>(endpoint: string, params: URLSearchParams | For
     }
 }
 
-export function toUrlBody(params: JsonValue) {
-    const urlParams = new URLSearchParams();
-    for (const key in params) {
-        const value = params[key];
-        const type = typeof value;
-        if (type == "string" || type == "number" || type == "boolean") {
-            urlParams.append(key, value.toString());
-        } else if (typeof value == "object") {
-            urlParams.append(key, JSON.stringify(value));
-        } else {
-            throw new Error("Unsupported value type: " + typeof value);
-        }
-    }
-    return urlParams;
-}
-
 export class Api {
-    static async hello() {
-        return apiGet<{ message: string }>("hello");
+    static search(query: string) {
+        const params = new URLSearchParams();
+        params.append("query", query);
+        return apiGet<(Video | Channel | Playlist)[]>("search?" + params.toString());
     }
 }

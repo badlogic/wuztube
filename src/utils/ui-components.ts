@@ -704,24 +704,18 @@ export function closeButton() {
 }
 
 export function renderTopbar(
-    title: HTMLElement | string,
+    title: TemplateResult | HTMLElement | string,
     closeButton?: TemplateResult | HTMLElement,
     buttons?: TemplateResult | HTMLElement,
     limitWidth = true
 ) {
-    return html`<top-bar
-        .limitWidth=${limitWidth}
-        .heading=${title instanceof HTMLElement ? title : title}
-        .closeButton=${closeButton}
-        .buttons=${buttons}
-    >
-    </top-bar>`;
+    return html`<top-bar .limitWidth=${limitWidth} .heading=${title} .closeButton=${closeButton} .buttons=${buttons}> </top-bar>`;
 }
 
 @customElement("top-bar")
 export class Topbar extends BaseElement {
     @property()
-    heading?: TemplateResult;
+    heading?: TemplateResult | HTMLElement | string;
 
     @property()
     buttons?: TemplateResult;
@@ -743,7 +737,9 @@ export class Topbar extends BaseElement {
                     ${this.closeButton ? html`<div class="flex-shrink-0">${this.closeButton}</div>` : html`<div class="w-4"></div>`}
                     ${this.heading instanceof HTMLElement
                         ? this.heading
-                        : html`<span class="font-semibold truncate overflow-hidden">${this.heading}</span>`}
+                        : this.heading instanceof String
+                        ? html`<span class="font-semibold truncate overflow-hidden">${this.heading}</span>`
+                        : this.heading}
                     ${this.buttons}
                 </div>
             </div>

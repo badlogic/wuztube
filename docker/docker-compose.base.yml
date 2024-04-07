@@ -21,9 +21,7 @@ services:
         stop_grace_period: 0s
         environment:
             PORT: 3333
-            DATABASE: ${WUZTUBE_DB}
-            DATABASE_USER: ${WUZTUBE_DB_USER}
-            DATABASE_PASSWORD: ${WUZTUBE_DB_PASSWORD}
+            YOUTUBE_KEY: ${WUZTUBE_YOUTUBE_KEY}
         volumes:
             - ./data:/data
             - ../:/app
