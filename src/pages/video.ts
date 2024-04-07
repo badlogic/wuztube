@@ -20,7 +20,10 @@ export class VideoPage extends BaseElement {
     render() {
         return html`<div class="${pageContainerStyle}">
             <div class="${pageContentStyle} h-full w-full items-center">
-                <button class="absolute rounded left-0 text-primary bg-[#000]" @click=${() => router.pop()}>
+                <button
+                    class="flex items-center justify-center absolute rounded-full left-2 top-2 text-primary bg-[#000] w-12 h-12"
+                    @click=${() => router.pop()}
+                >
                     <i class="icon w-8 h-8">${arrowLeftIcon}</i>
                 </button>
                 <iframe

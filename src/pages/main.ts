@@ -1,4 +1,4 @@
-import { html } from "lit";
+import { PropertyValueMap, html } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { BaseElement } from "../app.js";
 import { searchIcon, settingsIcon } from "../utils/icons.js";
@@ -27,9 +27,22 @@ export class MainPage extends BaseElement {
     @query("#filter")
     filter!: HTMLInputElement;
 
+    enteredSetup = true;
+
+    protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+        super.firstUpdated(_changedProperties);
+    }
+
     connectedCallback(): void {
         super.connectedCallback();
+        if (this.enteredSetup) {
+            this.updateData();
+            this.enteredSetup = false;
+        }
+    }
 
+    updateData() {
+        this.videos = [];
         const saved = Store.getSaved();
         for (const item of saved) {
             if (item.type == "video") this.videos.push(item);
@@ -44,7 +57,13 @@ export class MainPage extends BaseElement {
     render() {
         return html`<div class="${pageContainerStyle}">
             <div class="${pageContentStyle} items-center p-4 gap-4">
-                <button class="absolute left-4 text-primary" @click=${() => router.replace("/setup")}>
+                <button
+                    class="absolute left-4 text-primary"
+                    @click=${() => {
+                        this.enteredSetup = true;
+                        router.push("/setup");
+                    }}
+                >
                     <i class="icon w-8 h-8">${settingsIcon}</i>
                 </button>
                 <theme-toggle class="absolute right-4"></theme-toggle>

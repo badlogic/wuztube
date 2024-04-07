@@ -33,7 +33,7 @@ export class VideoElement extends BaseElement {
             </div>
             <div class="flex flex-col flex-grow gap-2">
                 <span class="line-clamp-2 font-semibold">${this.item.title}</span>
-                <span class="line-clamp-2">${this.item.description}</span>
+                <span class="line-clamp-2 flex-grow" style="overflow-wrap: anywhere;">${this.item.description}</span>
                 ${this.action ? this.action : nothing}
             </div>
         </div>`;
@@ -58,7 +58,7 @@ export class PlaylistElement extends BaseElement {
             </div>
             <div class="flex flex-col flex-grow gap-2">
                 <span class="line-clamp-2 font-semibold">${this.item.title}</span>
-                <span class="line-clamp-2">${this.item.description}</span>
+                <span class="line-clamp-2 flex-grow" style="overflow-wrap: anywhere;">${this.item.description}</span>
                 ${this.action ? this.action : nothing}
             </div>
         </div>`;
@@ -132,7 +132,9 @@ export class SearchPage extends BaseElement {
                     <label><input type="checkbox" checked id="playlists" /> Playlist</label>
                 </div>
                 ${this.searching ? html`<loading-spinner></loading-spinner>` : nothing} ${this.error ? renderError(this.error) : nothing}
-                ${this.searchResult.length > 0 ? repeat(this.searchResult, renderItem) : nothing}
+                ${this.searchResult.length > 0
+                    ? html`<div class="self-center flex flex-col max-w-[600px] gap-8">${repeat(this.searchResult, renderItem)}</div>`
+                    : nothing}
             </div>
         </div>`;
     }

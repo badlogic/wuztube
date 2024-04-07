@@ -24,13 +24,15 @@ export class SetupPage extends BaseElement {
 
         return html`<div class="${pageContainerStyle}">
             <div class="${pageContentStyle} items-center p-4 gap-4">
-                <button class="absolute left-4 text-primary" @click=${() => router.replace("/")}><i class="icon w-8 h-8">${arrowLeftIcon}</i></button>
+                <button class="absolute left-4 text-primary" @click=${() => router.pop()}><i class="icon w-8 h-8">${arrowLeftIcon}</i></button>
                 <h1 class="text-3xl">WuzTube</h1>
                 <div class="flex flex-col items-center gap-4">${i18n("setup-text")}</div>
-                <a href="/search" class="button my-4">${i18n("add-video")}</a>
+                <button class="button my-4" @click=${() => router.push("/search")}>${i18n("add-video")}</button>
                 ${saved.length == 0
                     ? html`<div class="flex-grow flex text-xs color-muted text-center justify-center items-center">${i18n("no-saved")}</div>`
-                    : repeat([...saved].reverse(), (item) => html`<div class="flex flex-col w-full">${this.renderItem(item)}</div>`)}
+                    : html`<div class="self-center flex flex-col max-w-[600px] gap-8">
+                          ${repeat([...saved].reverse(), (item) => html`<div class="flex flex-col w-full">${this.renderItem(item)}</div>`)}
+                      </div>`}
             </div>
         </div>`;
     }

@@ -23,7 +23,10 @@ const english: Messages = {
     "Invalid stream": "Invalid stream",
     "Sorry, an unknown error occured": "Sorry, an unknown error occured",
     "End of list": "End of list",
-    "setup-text": html`Test"`,
+    "setup-text": html`<h1 class="text-xl">Settings</h1>
+        <p class="max-w-[640px] text-center">
+            With WuzTube, you can set a list of YouTube videos, channels, and playlists from which your child can then independently choose.
+        </p> `,
     "add-video": "Add video, channel, or playlist",
     "no-saved": "No videos, channels, or playlists added yet",
     "search-text": "Add videos, channels, and playlists",
