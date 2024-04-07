@@ -26,7 +26,9 @@ export class VideoElement extends BaseElement {
 
         return html`<div class="w-full flex flex-col sm:flex-row gap-1 sm:gap-4">
             <div class="relative">
-                <a href="/video/${this.item.id}"><img src="${this.item.thumbnail.url}" class="sm:max-w-[240px] aspect-[480/360] rounded-md" /></a>
+                <a href="/video/${this.item.id}?controls"
+                    ><img src="${this.item.thumbnail.url}" class="sm:max-w-[240px] aspect-[480/360] rounded-md"
+                /></a>
                 <span class="p-1 rounded absolute right-1 bottom-1 bg-[#000] text-[#ccc]">${time}</span>
             </div>
             <div class="flex flex-col flex-grow gap-2">
@@ -49,7 +51,9 @@ export class PlaylistElement extends BaseElement {
     render() {
         return html`<div class="w-full flex flex-col sm:flex-row gap-1 sm:gap-4">
             <div class="relative">
-                <a href="/playlist/${this.item.id}"><img src="${this.item.thumbnail.url}" class="sm:max-w-[240px] aspect-[480/360] rounded-md" /></a>
+                <a href="/playlist/${this.item.id}?controls"
+                    ><img src="${this.item.thumbnail.url}" class="sm:max-w-[240px] aspect-[480/360] rounded-md"
+                /></a>
                 <span class="p-1 rounded absolute right-1 bottom-1 bg-[#000] text-[#ccc]">${this.item.videos.length} Videos</span>
             </div>
             <div class="flex flex-col flex-grow gap-2">
@@ -69,19 +73,10 @@ function renderItem(item: Video | Playlist | Channel) {
         let saved = Store.getSaved();
         const button = ev.target as HTMLButtonElement;
         if (button.innerText == i18n("add")) {
-            if (item.type == "video") {
-                saved.push(item);
-            } else if (item.type == "playlist") {
-                saved.push(...item.videos);
-            }
+            saved.push(item);
             button.innerText = i18n("remove");
         } else {
-            if (item.type == "video") {
-                saved = saved.filter((other) => other.id != item.id);
-            } else if (item.type == "playlist") {
-                const lookup = new Set<string>(item.videos.map((item) => item.id));
-                saved = saved.filter((other) => !lookup.has(other.id));
-            }
+            saved = saved.filter((other) => other.id != item.id);
             button.innerText = i18n("add");
         }
         Store.setSaved(saved);
@@ -106,13 +101,14 @@ export class SearchPage extends BaseElement {
     @state()
     error?: string;
 
+    @query("#videos")
+    videosCheckbox!: HTMLInputElement;
+
+    @query("#playlists")
+    playlistsCheckbox!: HTMLInputElement;
+
     @query("#search")
     searchElement!: HTMLInputElement;
-
-    protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-        super.firstUpdated(_changedProperties);
-        this.search();
-    }
 
     render() {
         return html`<div class="${pageContainerStyle}">
@@ -125,12 +121,15 @@ export class SearchPage extends BaseElement {
                 <div class="w-full max-w-[480px] flex rounded-full px-4 py-2 border border-divider">
                     <input
                         id="search"
-                        class="flex-grow outline-none"
+                        class="flex-grow outline-none bg-transparent"
                         placeholder="${i18n("search")}"
                         @keydown=${(ev: KeyboardEvent) => this.handleKeyDown(ev)}
-                        value="der kleine maulwurf"
                     />
                     <button class="icon w-6 h-6" @click=${() => this.search()}>${searchIcon}</button>
+                </div>
+                <div class="flex gap-4">
+                    <label><input type="checkbox" checked id="videos" /> Videos</label>
+                    <label><input type="checkbox" checked id="playlists" /> Playlist</label>
                 </div>
                 ${this.searching ? html`<loading-spinner></loading-spinner>` : nothing} ${this.error ? renderError(this.error) : nothing}
                 ${this.searchResult.length > 0 ? repeat(this.searchResult, renderItem) : nothing}
@@ -147,13 +146,14 @@ export class SearchPage extends BaseElement {
     }
 
     async search() {
+        const query = this.searchElement.value.trim();
+        if (query.length == 0) return;
         if (this.searching) return;
         try {
             this.error = undefined;
             this.searchResult = [];
             this.searching = true;
-            const query = this.searchElement.value.trim();
-            const response = await Api.search(query);
+            const response = await Api.search(query, this.videosCheckbox.checked, this.playlistsCheckbox.checked);
             if (response instanceof Error) throw response;
             this.searchResult = response;
         } catch {

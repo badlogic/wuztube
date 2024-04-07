@@ -3,6 +3,7 @@ import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { errorIcon, arrowUpDoubleIcon, spinnerIcon, upDownIcon, moonIcon, sunIcon, settingsIcon, arrowLeftIcon, arrowRightIcon } from "./icons.js";
 import { router } from "./routing.js";
+import { Store, Theme } from "./store.js";
 
 export function dom(template: TemplateResult, container?: HTMLElement | DocumentFragment): HTMLElement[] {
     if (container) {
@@ -776,7 +777,7 @@ export function fixLinksAndVideos(container: HTMLElement, collapsed = false) {
                         if (link.pathname == location.pathname) return;
                         const navs = new Set<string>(["/home", "/settings", "/hashtags", "/lists", "/feeds", "/search", "/notifications"]);
 
-                        router.push(link.pathname);
+                        router.push(link.pathname + link.search);
                     });
                 }
             }
@@ -830,4 +831,37 @@ export function uploadJson(callback: (data: any) => void): void {
     });
 
     inputElement.click();
+}
+
+@customElement("theme-toggle")
+export class ThemeToggle extends LitElement {
+    @state()
+    theme: Theme = "light";
+
+    protected createRenderRoot(): Element | ShadowRoot {
+        return this;
+    }
+
+    connectedCallback(): void {
+        super.connectedCallback();
+        this.theme = Store.getTheme() ?? "light";
+        this.setTheme(this.theme);
+    }
+
+    setTheme(theme: Theme) {
+        Store.setTheme(theme);
+        if (theme == "dark") document.documentElement.classList.add("dark");
+        else document.documentElement.classList.remove("dark");
+    }
+
+    toggleTheme() {
+        this.theme = this.theme == "dark" ? "light" : "dark";
+        this.setTheme(this.theme);
+    }
+
+    render() {
+        return html`<button class="flex items-center justify-center w-full h-full text-primary" @click=${this.toggleTheme}>
+            <i class="icon !w-8 !h-8">${this.theme == "dark" ? moonIcon : sunIcon}</i>
+        </button>`;
+    }
 }

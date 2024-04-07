@@ -44,9 +44,11 @@ export async function apiPost<T>(endpoint: string, params: URLSearchParams | For
 }
 
 export class Api {
-    static search(query: string) {
+    static search(query: string, videos: boolean, playlists: boolean) {
         const params = new URLSearchParams();
         params.append("query", query);
+        params.append("videos", videos.toString());
+        params.append("playlists", playlists.toString());
         return apiGet<(Video | Channel | Playlist)[]>("search?" + params.toString());
     }
 }

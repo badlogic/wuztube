@@ -61,6 +61,7 @@ export class App extends LitElement {
         } else {
             router.replace(location.pathname);
         }*/
-        router.replace(location.pathname);
+        const href = location.pathname + location.search;
+        router.replace(href);
     }
 }

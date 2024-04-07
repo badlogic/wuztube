@@ -112,17 +112,23 @@ async function fetchPlaylistDetails(playlistsToFetch: Playlist[], youtubeKey: st
 
     app.get("/api/search", async (req, res) => {
         try {
-            let data = queryCache[req.query.query as string];
+            const query = (req.query.query as string) + "|" + req.query.videos + "|" + req.query.playlists;
+            let data = queryCache[query];
             if (!data) {
+                let types: string[] = [];
+                if (req.query.videos == "true") types.push("video");
+                if (req.query.playlists == "true") types.push("playlist");
+
                 const params = new URLSearchParams();
                 params.append("q", (req.query.query as string) ?? "");
                 params.append("part", "snippet");
                 params.append("maxResults", "50");
+                params.append("type", types.join(","));
                 params.append("key", youtubeKey);
                 let response = await fetch("https://www.googleapis.com/youtube/v3/search?" + params.toString());
                 if (!response.ok) throw new Error(await response.text());
                 data = await response.json();
-                queryCache[req.query.query as string] = data;
+                queryCache[query] = data;
                 fs.writeFileSync("/data/querycache.json", JSON.stringify(queryCache, null, 2), "utf-8");
             }
             const items = convertYoutubeData(data);

@@ -8,10 +8,13 @@ import { pageContainerStyle, pageContentStyle } from "../utils/styles.js";
 @customElement("video-page")
 export class VideoPage extends BaseElement {
     videoId: string;
+    controls: boolean;
 
     constructor() {
         super();
         this.videoId = router.getCurrentParams()?.get("id") ?? "";
+        const queryParams = new URLSearchParams(window.location.search);
+        this.controls = queryParams.has("controls");
     }
 
     render() {
@@ -22,7 +25,7 @@ export class VideoPage extends BaseElement {
                 </button>
                 <iframe
                     class="flex-grow w-full"
-                    src="https://www.youtube.com/embed/${this.videoId}?mute=0&autoplay=1&controls=0"
+                    src="https://www.youtube.com/embed/${this.videoId}?mute=0&autoplay=1&controls=${this.controls ? "1" : "0"}"
                     frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen

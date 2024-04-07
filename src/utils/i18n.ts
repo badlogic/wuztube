@@ -14,6 +14,7 @@ export interface Messages {
     "search-error": string;
     add: string;
     remove: string;
+    filter: string;
 }
 
 const english: Messages = {
@@ -30,6 +31,7 @@ const english: Messages = {
     "search-error": "Whoops, something went wrong",
     add: "Add",
     remove: "Remove",
+    filter: "Filter",
 };
 
 const german: Messages = {
@@ -49,6 +51,7 @@ const german: Messages = {
     "search-error": "Ups, da ist etwas schief gelaufen",
     add: "Hinzufügen",
     remove: "Entfernen",
+    filter: "Filtern",
 };
 
 export type LanguageCode = "en" | "de";

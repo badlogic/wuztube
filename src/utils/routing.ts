@@ -68,12 +68,13 @@ export class Router {
     }
 
     replace(path: string) {
-        if (this.isIgnored(path)) return true;
+        const pathName = path.split("?")[0];
+        if (this.isIgnored(pathName)) return true;
         const page = this.pageStack.pop();
         page?.page.remove();
-        if (this.navigateTo(path)) {
+        if (this.navigateTo(pathName)) {
             history.replaceState({ page: history.state?.page ?? this.pageStack.length }, "", path);
-            this.notifyListeners(path);
+            this.notifyListeners(pathName);
         } else {
             history.replaceState({ page: history.state?.page ?? this.pageStack.length }, "", this.rootRoute);
             this.notifyListeners(this.rootRoute);
