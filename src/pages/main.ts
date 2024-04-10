@@ -61,7 +61,7 @@ export class MainPage extends BaseElement {
                     class="absolute left-4 text-primary"
                     @click=${() => {
                         this.enteredSetup = true;
-                        router.push("/setup");
+                        router.push("/check");
                     }}
                 >
                     <i class="icon w-8 h-8">${settingsIcon}</i>

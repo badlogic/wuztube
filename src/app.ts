@@ -33,6 +33,11 @@ export class App extends LitElement {
             () => "404"
         );
         router.addRoute(
+            "/check",
+            () => html`<parental-page></parental-page>`,
+            () => "Check"
+        );
+        router.addRoute(
             "/setup",
             () => html`<setup-page></setup-page>`,
             () => "Setup"

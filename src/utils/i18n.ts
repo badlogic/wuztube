@@ -15,6 +15,7 @@ export interface Messages {
     add: string;
     remove: string;
     filter: string;
+    "parental-check": string;
 }
 
 const english: Messages = {
@@ -35,6 +36,7 @@ const english: Messages = {
     add: "Add",
     remove: "Remove",
     filter: "Filter",
+    "parental-check": "Enter the sum of these numbers",
 };
 
 const german: Messages = {
@@ -55,6 +57,7 @@ const german: Messages = {
     add: "Hinzufügen",
     remove: "Entfernen",
     filter: "Filtern",
+    "parental-check": "Gib die Summe beider Zahlen ein",
 };
 
 export type LanguageCode = "en" | "de";

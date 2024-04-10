@@ -20,12 +20,14 @@ export class VideoPage extends BaseElement {
     render() {
         return html`<div class="${pageContainerStyle}">
             <div class="${pageContentStyle} h-full w-full items-center">
-                <button
-                    class="flex items-center justify-center absolute rounded-full left-2 top-2 text-primary bg-[#000] w-12 h-12"
-                    @click=${() => router.pop()}
-                >
-                    <i class="icon w-8 h-8">${arrowLeftIcon}</i>
-                </button>
+                ${this.controls
+                    ? html` <button
+                          class="flex items-center justify-center absolute rounded-full left-2 top-2 text-primary bg-[#000] w-12 h-12"
+                          @click=${() => router.pop()}
+                      >
+                          <i class="icon w-8 h-8">${arrowLeftIcon}</i>
+                      </button>`
+                    : html`<div class="absolute w-full h-full" @click=${() => router.pop()}></div>`}
                 <iframe
                     class="flex-grow w-full"
                     src="https://www.youtube.com/embed/${this.videoId}?mute=0&autoplay=1&controls=${this.controls ? "1" : "0"}"
