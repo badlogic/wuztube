@@ -2,8 +2,8 @@
     "name": "wuztube",
     "short_name": "wuztube",
     "description": "A YouTube app for kids that's not terrible",
-    "start_url": "/",
-    "display": "standalone",
+    "start_url": "/?fullscreen=true",
+    "display": "fullscreen",
     "background_color": "#000c15",
     "theme_color": "#000c15",
     "icons": [
